@@ -59,7 +59,9 @@ def main():
         return
     cdf = CDF(data)
 
-    x_values = np.linspace(-6, 6, 10000)
+    data_min = np.min(data)
+    data_max = np.max(data)
+    x_values = np.linspace(data_min-1, 1000, 1000000)
 
     pdf_values = cdf_to_pdf(cdf, x_values)
     plot(cdf,x_values,pdf_values)
