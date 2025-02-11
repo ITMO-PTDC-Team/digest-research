@@ -1,18 +1,16 @@
 import numpy as np
 
-zipf_param = 2  
-num_elements = 20_000_000 
-noise_mean = 0  
-noise_std = 1  
-num_proportion = 0.7
-num_zipf_elements = int(num_elements * num_proportion)
-num_noise_elements = num_elements - num_zipf_elements
+
 parameters =[
     [1.5,20_000_000,0,1,0.7],
     [2,20_000_000,0,1,0.7],
     [2,30_000_000,0,1,0.8],
     [3.5,30_000_000,0,1,0.7],
-    [2,20_000_000,0,1,0.6]
+    [2,20_000_000,0,1,0.6],
+    [2,30_000_000,0,1,0],
+    [2,30_000_000,0,1,0.1],
+    [2,30_000_000,0,1,0.05]
+
 ]
 for i, param in enumerate(parameters, start=0):
     output_file = f"test_distribution_{i}.txt"
