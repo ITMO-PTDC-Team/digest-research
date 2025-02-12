@@ -10,7 +10,7 @@ import (
 	//"github.com/influxdata/tdigest"
 )
 
-var quantiles = []float64{0.25, 0.5, 0.75, 0.90, 0.95, 0.99, 0.999}
+var quantiles = []float64{0.25, 0.5, 0.75, 0.90, 0.95, 0.99, 0.999, 0.9999}
 const NUMBER_OF_DISTRIBUTIONS = 8
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	for i := range results{
 		results[i]=make([]float64, len(quantiles))
 	}
-	outputFile := "results/result.txt"
+	outputFile := "results/resultEXP.txt"
 	outFile, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
