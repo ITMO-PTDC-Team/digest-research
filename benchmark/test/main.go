@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"strings"
 	"fmt"
-	//"github.com/influxdata/tdigest"
-	//"github.com/influxdata/tdigest"
 )
 
 var quantiles = []float64{0.25, 0.5, 0.75, 0.90, 0.95, 0.99, 0.999, 0.9999}
-const NUMBER_OF_DISTRIBUTIONS = 8
+const NUMBER_OF_DISTRIBUTIONS = 10
+const NUMBER_OF_ZIPF_DISTRIBUTIONS=5
+const NUMBER_OF_NORMAL_DISTRIBUTIONS=5
 
 func main() {
 
@@ -19,7 +19,7 @@ func main() {
 	for i := range results{
 		results[i]=make([]float64, len(quantiles))
 	}
-	outputFile := "results/resultEXP.txt"
+	outputFile := "results/result.txt"
 	outFile, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
@@ -66,11 +66,27 @@ func main() {
 		}
 		
 	}
+	fmt.Fprintf(outFile,"Zipf distributions\n")
+	fmt.Fprintf(outFile,"\n")
 	for i:=0;i<len(quantiles);i++{
 		fmt.Fprintf(outFile,"%.4f\t", quantiles[i])
 	}
 	fmt.Fprintf(outFile,"\n")
-		for i := 0; i < NUMBER_OF_DISTRIBUTIONS; i++ {
+	fmt.Fprintf(outFile,"\n")
+		for i := 0; i < NUMBER_OF_ZIPF_DISTRIBUTIONS; i++ {
+			for j := 0 ; j < len(quantiles); j++{
+			fmt.Fprintf(outFile,"%.4f\t", results[i][j])
+		}
+		fmt.Fprintf(outFile,"\n")
+	}
+	fmt.Fprintf(outFile,"Normal distributions\n")
+	fmt.Fprintf(outFile,"\n")
+	for i:=0;i<len(quantiles);i++{
+		fmt.Fprintf(outFile,"%.4f\t", quantiles[i])
+	}
+	fmt.Fprintf(outFile,"\n")
+	fmt.Fprintf(outFile,"\n")
+		for i := 0; i < NUMBER_OF_NORMAL_DISTRIBUTIONS; i++ {
 			for j := 0 ; j < len(quantiles); j++{
 			fmt.Fprintf(outFile,"%.4f\t", results[i][j])
 		}
