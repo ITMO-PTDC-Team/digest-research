@@ -277,12 +277,12 @@ func (t *TDigest) CDF(x float64) float64 {
 func (t *TDigest) integratedQ(k float64) float64 {
     q := math.Min(k, t.Compression) / t.Compression
 
-    c := 4.0 
+    c := 4.0
     return (math.Exp(c * q) - 1.0) / (math.Exp(c) - 1.0)
 }
 
 func (t *TDigest) integratedLocation(q float64) float64 {
-    c := 4.0 
+    c := 4.0
     return t.Compression * math.Log(1.0 + (math.Exp(c) - 1.0) * q) / c
 }
 

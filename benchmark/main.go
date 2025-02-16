@@ -6,20 +6,31 @@ import (
 	"strconv"
 	"strings"
 	"fmt"
+	"math/rand"
+	"sort"
 )
 
-var quantiles = []float64{0.25, 0.5, 0.75, 0.90, 0.95, 0.99, 0.999, 0.9999}
+var quantiles = []float64{0.25, 0.5, 0.75,0.80, 0.90}
 const NUMBER_OF_DISTRIBUTIONS = 10
 const NUMBER_OF_ZIPF_DISTRIBUTIONS=5
 const NUMBER_OF_NORMAL_DISTRIBUTIONS=5
 
 func main() {
-
+	rand.Seed(42)
+	for i:=0 ; i < 5 ; i++{
+		randomNum := 0.9 + rand.Float64()*(1.0-0.9)
+		quantiles = append(quantiles, randomNum)
+	}
+	for i:=0 ; i < 5 ; i++{
+		randomNum := 0.99 + rand.Float64()*(1.0-0.99)
+		quantiles = append(quantiles, randomNum)
+	}
+	sort.Float64s(quantiles)
 	results :=make ([][]float64,NUMBER_OF_DISTRIBUTIONS)
 	for i := range results{
 		results[i]=make([]float64, len(quantiles))
 	}
-	outputFile := "results/result.txt"
+	outputFile := "results/resultPOW.txt"
 	outFile, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
@@ -88,9 +99,19 @@ func main() {
 	fmt.Fprintf(outFile,"\n")
 		for i := 0; i < NUMBER_OF_NORMAL_DISTRIBUTIONS; i++ {
 			for j := 0 ; j < len(quantiles); j++{
-			fmt.Fprintf(outFile,"%.4f\t", results[i][j])
+			fmt.Fprintf(outFile,"%.4f\t", results[i+NUMBER_OF_ZIPF_DISTRIBUTIONS][j])
 		}
 		fmt.Fprintf(outFile,"\n")
 	}
+	avg_results:=make([]float64, len(quantiles))
+	fmt.Fprintf(outFile,"\nAverage diff\n\n")
+	for j := 0 ; j < len(quantiles); j++{
+		for i := 0; i < NUMBER_OF_DISTRIBUTIONS; i++ {
+			avg_results[j]+=results[i][j]
+		}
+		avg_results[j]=avg_results[j]/float64(NUMBER_OF_DISTRIBUTIONS)
+		fmt.Fprintf(outFile,"%.4f\t", avg_results[j])
+	}
+	fmt.Fprintf(outFile,"\n")
 	writer.Flush()
 }
