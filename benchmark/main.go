@@ -30,7 +30,7 @@ func main() {
 	for i := range results{
 		results[i]=make([]float64, len(quantiles))
 	}
-	outputFile := "results/resultPOW.txt"
+	outputFile := "results/resultexpbuck.txt"
 	outFile, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
