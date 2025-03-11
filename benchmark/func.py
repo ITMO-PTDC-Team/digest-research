@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 import math
 
-compression=1000.0
+compression=100.0
 def integrated_q_sin(k: float) -> float:
 
     return (math.sin(min(k, compression) * math.pi / compression - math.pi / 2.0) + 1.0) / 2.0

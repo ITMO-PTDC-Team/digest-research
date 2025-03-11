@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"os"
 	"strconv"
-	"strings"
 	"fmt"
 	"sort"
 	"math"
@@ -28,7 +27,7 @@ func main() {
 		results[i]=make([]float64, len(quantiles))
 	}
 
-	outputFile := "results/100sin_pow_2_5.txt"
+	outputFile := "quantiles/cdf100sin_pow1_5.txt"
 	outFile, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
@@ -37,7 +36,7 @@ func main() {
 	writer := bufio.NewWriter(outFile)
 	
 	for i := 0; i < NUMBER_OF_DISTRIBUTIONS; i++ {
-		td := NewWithCompression(100);
+		//td := NewWithCompression(100);
 		inputFile := "distributions/test_distribution_" + strconv.Itoa(i) + ".txt"
 		cdf, err := LoadCdfImpl(inputFile)
 		if err != nil {
@@ -56,20 +55,20 @@ func main() {
 		
 		scanner := bufio.NewScanner(file)
 		
-		for scanner.Scan() {
-			line := scanner.Text()
-			value, err := strconv.ParseFloat(strings.TrimSpace(line), 64)
-			if err != nil {
-				panic(err)
-			}
-			td.Add(value, 1)
-		}
+		// for scanner.Scan() {
+		// 	line := scanner.Text()
+		// 	value, err := strconv.ParseFloat(strings.TrimSpace(line), 64)
+		// 	if err != nil {
+		// 		panic(err)
+		// 	}
+		// 	td.Add(value, 1)
+		// }
 
 		if err := scanner.Err(); err != nil {
 			panic(err)
 		}
 		
-		result := CompareCDF(cdf, td, quantiles)
+		result := GetQuantiles(cdf, quantiles)
 		for j := range result {
 			results[i][j]=result[j]
 		}
@@ -78,10 +77,10 @@ func main() {
 
 	max_diff:=make([]float64, len(quantiles))
 	avg_diff:=make([]float64, len(quantiles))
-	max_diff_q:=0.0
-	max_diff_v:=0.0
-	avg_max_diff_v:=0.0
-	avg_max_diff_q:=0.0
+	//max_diff_q:=0.0
+	// max_diff_v:=0.0
+	// avg_max_diff_v:=0.0
+	//avg_max_diff_q:=0.0
 	for j:=0;j<NUMBER_OF_DISTRIBUTIONS;j++{
 		for i:=0;i<len(quantiles);i++{
 			
@@ -98,7 +97,8 @@ func main() {
 		}
 	}
 	
-	fmt.Fprintf(outFile,"MaxDiff\n")
+	//fmt.Fprintf(outFile,"MaxDiff\n")
+	//fmt.Fprintf(outFile,"\n")
 	fmt.Fprintf(outFile,"%d %d\n",len(quantiles),NUMBER_OF_DISTRIBUTIONS+3)
 	for i:=0;i<len(quantiles);i++{
 		fmt.Fprintf(outFile,"%.4f\t", quantiles[i])
@@ -117,16 +117,16 @@ func main() {
 	
 	for j := 0 ; j < len(quantiles); j++{
 		fmt.Fprintf(outFile,"%.4f\t", max_diff[j])
-		if max_diff_v<max_diff[j]{
-			max_diff_v=max_diff[j]
-			max_diff_q=quantiles[j]
-		}
+		// if max_diff_v<max_diff[j]{
+		// 	max_diff_v=max_diff[j]
+		// 	max_diff_q=quantiles[j]
+		// }
 	}
 	
-	fmt.Fprintf(outFile,"\nMax Diff Value And Quantile\n")
-	fmt.Fprintf(outFile,"Quantile:%.4f Value:%.4f\n",max_diff_q,max_diff_v)
+	//fmt.Fprintf(outFile,"\n\nMax Diff Value And Quantile\n")
+	//fmt.Fprintf(outFile,"Quantile:%.4f Value:%.4f\n",max_diff_q,max_diff_v)
 	
-	fmt.Fprintf(outFile,"Avg Diff\n")
+	//fmt.Fprintf(outFile,"\nAvg Diff\n")
 	//fmt.Fprintf(outFile,"\n")
 	
 	// for i:=0;i<len(quantiles);i++{
@@ -134,17 +134,17 @@ func main() {
 	// }
 	
 	// fmt.Fprintf(outFile,"\n")
-	//fmt.Fprintf(outFile,"\n")
+	fmt.Fprintf(outFile,"\n")
 	
 	for j := 0 ; j < len(quantiles); j++{
 			fmt.Fprintf(outFile,"%.4f\t", avg_diff[j])
-			if avg_max_diff_v<avg_diff[j]{
-				avg_max_diff_v=avg_diff[j]
-				avg_max_diff_q=quantiles[j]
-			}
+			// if avg_max_diff_v<avg_diff[j]{
+			// 	avg_max_diff_v=avg_diff[j]
+			// 	avg_max_diff_q=quantiles[j]
+			// }
 		}
-		fmt.Fprintf(outFile,"\nMax AVG Diff Value And Quantile\n")
-		fmt.Fprintf(outFile,"Quantile:%.4f Value:%.4f\n",avg_max_diff_q,avg_max_diff_v)
+		//fmt.Fprintf(outFile,"\n\nMax AVG Diff Value And Quantile\n")
+		//fmt.Fprintf(outFile,"Quantile:%.4f Value:%.4f\n",avg_max_diff_q,avg_max_diff_v)
 	fmt.Fprintf(outFile,"\n")
 	writer.Flush()
 

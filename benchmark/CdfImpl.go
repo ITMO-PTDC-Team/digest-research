@@ -75,3 +75,13 @@ func CompareCDF(cdf, td CDF, quantiles []float64) []float64 {
 	}
 	return results
 }
+
+func GetQuantiles(td CDF, quantiles []float64) []float64 {
+	var results []float64
+	for _, q := range quantiles {
+		tdValue := td.Quantile(q)	
+		results = append(results, tdValue)
+	}
+	return results
+}
+

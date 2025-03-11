@@ -275,11 +275,11 @@ func (t *TDigest) CDF(x float64) float64 {
 }
 
 func (t *TDigest) integratedQ(k float64) float64 {
-    return (math.Sin(math.Min(k, t.Compression)*math.Pi/t.Compression-math.Pi/2.0) + 1.0) / 2.0
+	return math.Pow((math.Sin(math.Min(k, t.Compression)*math.Pi/t.Compression-math.Pi/2.0) + 1.0) / 2.0,1.0/3.0)
 }
 
 func (t *TDigest) integratedLocation(q float64) float64 {
-	return t.Compression * (math.Asin(2.0*q-1.0) + math.Pi/2.0) / math.Pi
+	return t.Compression * (math.Asin(2.0*math.Pow(q,3.0)-1.0) + math.Pi/2.0) / math.Pi
 }
 
 func weightedAverage(x1, w1, x2, w2 float64) float64 {

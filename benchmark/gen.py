@@ -41,10 +41,12 @@ parameters_normal=[
     [0,2,10_000_000,5,2,10_000_000],
     [1,1,10_000_000,4,3,10_000_000],
     [0,1,20_000_000,5,2,10_000_000],
-    [0,1,10_000_000,5,2,30_000_000]
+    [0,1,10_000_000,5,2,30_000_000],
+    [0,0.5,20_000_000,3,0.5,30_000_000],
+    [0,0.4,15_000_000,5,1,20_000_000]
 ]
 for i, param in enumerate(parameters_zipf, start=0):
-    output_file = f"distributions/test_distribution_{i+5}.txt"
+    output_file = f"distributions/test_distribution_{i+len(parameters_zipf)}.txt"
     n1_mean=parameters_normal[i][0]
     n1_std=parameters_normal[i][1]
     n1_num=parameters_normal[i][2]
@@ -59,3 +61,23 @@ for i, param in enumerate(parameters_zipf, start=0):
     with open(output_file, "w") as f:
         for value in n_sorted:
             f.write(f"{value}\n")
+
+parameters_Pareto=[
+    [1,20_000_000],
+    [2,20_000_000],
+    [3,20_000_000],
+    [4,20_000_000],
+    [5,20_000_000],
+]
+
+for i, param in enumerate(parameters_zipf, start=0):
+    output_file = f"distributions/test_distribution_{i+len(parameters_zipf)+len(parameters_normal)}.txt"
+    p_shape=parameters_Pareto[i][0]
+    p_num=parameters_Pareto[i][1]
+    n=np.random.pareto(p_shape,p_num)
+    n_sorted=np.sort(n)
+
+    with open(output_file, "w") as f:
+        for value in n_sorted:
+            f.write(f"{value}\n")
+
