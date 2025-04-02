@@ -45,7 +45,7 @@ parameters_normal=[
     [0,0.5,20_000_000,3,0.5,30_000_000],
     [0,0.4,15_000_000,5,1,20_000_000]
 ]
-for i, param in enumerate(parameters_zipf, start=0):
+for i, param in enumerate(parameters_normal, start=0):
     output_file = f"distributions/test_distribution_{i+len(parameters_zipf)}.txt"
     n1_mean=parameters_normal[i][0]
     n1_std=parameters_normal[i][1]
@@ -70,7 +70,7 @@ parameters_Pareto=[
     [5,20_000_000],
 ]
 
-for i, param in enumerate(parameters_zipf, start=0):
+for i, param in enumerate(parameters_Pareto, start=0):
     output_file = f"distributions/test_distribution_{i+len(parameters_zipf)+len(parameters_normal)}.txt"
     p_shape=parameters_Pareto[i][0]
     p_num=parameters_Pareto[i][1]
@@ -81,3 +81,28 @@ for i, param in enumerate(parameters_zipf, start=0):
         for value in n_sorted:
             f.write(f"{value}\n")
 
+parameters_n_normal=[
+    [20_000_000,10,0,0.5],
+    [20_000_000,20,0,0.5],
+    [20_000_000,40,0,0.5],
+    [20_000_000,50,0,0.5],
+    [20_000_000,100,0,0.5]
+]
+
+for i, param in enumerate(parameters_n_normal, start=0):
+    output_file = f"distributions/test_distribution_{i+len(parameters_zipf)+len(parameters_normal)+len(parameters_Pareto)}.txt"
+    size=parameters_n_normal[i][0]
+    num=parameters_n_normal[i][1]
+    mean=parameters_n_normal[i][2]
+    std=parameters_n_normal[i][3]
+    
+    n = []
+    
+    for j in range(0, num):
+        normal_data = np.random.normal(mean + j, std, size // num)
+        n.extend(normal_data)
+
+    n_sorted=np.sort(n)
+    with open(output_file, "w") as f:
+        for value in n_sorted:
+            f.write(f"{value}\n")

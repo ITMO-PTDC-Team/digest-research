@@ -13,11 +13,12 @@ var quantiles = []float64{}
 const NUMBER_OF_ZIPF_DISTRIBUTIONS=5
 const NUMBER_OF_NORMAL_DISTRIBUTIONS=8
 const NUMBER_OF_PARETO_DISTRIBUTIONS=5
-const NUMBER_OF_DISTRIBUTIONS = NUMBER_OF_NORMAL_DISTRIBUTIONS+NUMBER_OF_PARETO_DISTRIBUTIONS+NUMBER_OF_ZIPF_DISTRIBUTIONS
+const NUMBER_OF_N_NORMAL_DISTIBUTIONS=5
+const NUMBER_OF_DISTRIBUTIONS = NUMBER_OF_NORMAL_DISTRIBUTIONS+NUMBER_OF_PARETO_DISTRIBUTIONS+NUMBER_OF_ZIPF_DISTRIBUTIONS+NUMBER_OF_N_NORMAL_DISTIBUTIONS
 
 func main() {
 
-	for i:=0.5 ; i <1 ; i+=0.001{
+	for i:=0.001 ; i <1 ; i+=0.001{
 	
 		quantiles = append(quantiles, i)
 	}
@@ -27,7 +28,7 @@ func main() {
 		results[i]=make([]float64, len(quantiles))
 	}
 
-	outputFile := "quantiles/cdf100sin_pow1_5.txt"
+	outputFile := "quantiles/cdf100sin_pow_2_5.txt"
 	outFile, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
