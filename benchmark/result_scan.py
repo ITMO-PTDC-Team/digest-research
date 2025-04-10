@@ -1,6 +1,10 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+def cdf_to_pdf(cdf, x_values):
+    cdf_values = np.array([cdf(x) for x in x_values])
+    pdf_values = np.diff(cdf_values) / np.diff(x_values)
+    return pdf_values
 
 def read_floats_from_file(filename):
     with open(filename, 'r') as file:
@@ -76,33 +80,26 @@ def read_data(filename):
         
         return X, Y
 
-def main():
-    print("bebr")
-    if len(sys.argv) > 1:
-        filename = sys.argv[1]
-    else:
-        filename = 'input.txt'
-
-    try:
-        data = read_floats_from_file(filename)
-    except FileNotFoundError:
-        return
-    cdf = CDF(data)
-    data_min = np.min(data)
-    data_max = np.max(data)
-    x_values = np.linspace(data_min-1, data_max, 1000000)
-    j=14
-    X1, Y1 = read_data('quantiles/td_sin_pow_2_5.txt')
-    X2, Y2 = read_data('quantiles/cdf_sin_pow_2_5.txt')
-    y_values = [cdf(x) for x in x_values]
-    plt.plot(x_values, y_values, label="dist", color='green')
-    plt.plot(X1, Y1[j], label='Tdigest',color='blue', linestyle='-')
-    plt.plot(X2, Y2[j], label='CDF',color='red', linestyle='-')
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.title('Сравнение TDgest и CDF')
-    plt.legend()
-    plt.grid(True)
-    plt.savefig(f'Graphic_{j+1}.png')
-    plt.show()
-    print("bebr")
+j = 22
+data = read_floats_from_file("distributions/test_distribution_"+str(j)+".txt")
+cdf = CDF(data)
+Y1, X1 = read_data('quantiles/td_sin_pow_2_5.txt')
+Y2, X2 = read_data('quantiles/cdf_sin_pow_2_5.txt')
+y_values = [cdf(x) for x in X1[j]]
+# data_min = np.min(data)
+# data_max = np.max(data)
+# x_values = np.linspace(data_min, data_max, 1000000)
+pdf_values = cdf_to_pdf(cdf, X1[j])
+max_v=max(pdf_values)
+pdf_norm=[x/max_v for x in pdf_values]
+plt.plot(X1[j][:-1] , pdf_norm,label='Distribution',color='green')
+plt.plot(X1[j], Y1, label='Tdigest', color='blue', linestyle='-')
+plt.plot(X2[j], Y2, label='CDF', color='red', linestyle='-')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Сравнение распределения, Tdigest и CDF')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(f'Graphic_{j}.png')
+plt.show()  
