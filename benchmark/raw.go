@@ -13,8 +13,9 @@ var quantiles = []float64{}
 const NUMBER_OF_ZIPF_DISTRIBUTIONS=5
 const NUMBER_OF_NORMAL_DISTRIBUTIONS=8
 const NUMBER_OF_PARETO_DISTRIBUTIONS=5
-const NUMBER_OF_N_NORMAL_DISTIBUTIONS=5
-const NUMBER_OF_DISTRIBUTIONS = NUMBER_OF_NORMAL_DISTRIBUTIONS+NUMBER_OF_PARETO_DISTRIBUTIONS+NUMBER_OF_ZIPF_DISTRIBUTIONS+NUMBER_OF_N_NORMAL_DISTIBUTIONS
+const NUMBER_OF_N_NORMAL_DISTIBUTIONS=8
+const NUMBER_OF_NORMAL_TAIL_DISTRIBUTION=8
+const NUMBER_OF_DISTRIBUTIONS = NUMBER_OF_NORMAL_DISTRIBUTIONS+NUMBER_OF_PARETO_DISTRIBUTIONS+NUMBER_OF_ZIPF_DISTRIBUTIONS+NUMBER_OF_N_NORMAL_DISTIBUTIONS+NUMBER_OF_NORMAL_TAIL_DISTRIBUTION
 
 func main() {
 
@@ -31,8 +32,8 @@ func main() {
 	for i := range results_cdf{
 		results_cdf[i]=make([]float64, len(quantiles))
 	}
-
-	outputFile_td := "quantiles/td_sin_pow_2_5.txt"
+	file_name := "sin_pow_2_5"
+	outputFile_td := "quantiles/td_" + file_name + ".txt"
 
 	outFile_td, err := os.Create(outputFile_td)
 	if err != nil {
@@ -42,7 +43,7 @@ func main() {
 	writer_td := bufio.NewWriter(outFile_td)
 	
 
-	outputFile_cdf := "quantiles/cdf_sin_pow_2_5.txt"
+	outputFile_cdf := "quantiles/cdf_" + file_name + ".txt"
 
 	outFile_cdf, err := os.Create(outputFile_cdf)
 	if err != nil {

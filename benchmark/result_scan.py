@@ -51,6 +51,7 @@ def plot(cdf,x_values,pdf_values):
     plt.legend()
     # plt.show()
 
+
 def read_data(filename):
     with open(filename, 'r') as file:
         try:
@@ -79,27 +80,29 @@ def read_data(filename):
             exit(1)
         
         return X, Y
-
-j = 22
-data = read_floats_from_file("distributions/test_distribution_"+str(j)+".txt")
-cdf = CDF(data)
-Y1, X1 = read_data('quantiles/td_sin_pow_2_5.txt')
-Y2, X2 = read_data('quantiles/cdf_sin_pow_2_5.txt')
-y_values = [cdf(x) for x in X1[j]]
-# data_min = np.min(data)
-# data_max = np.max(data)
-# x_values = np.linspace(data_min, data_max, 1000000)
-pdf_values = cdf_to_pdf(cdf, X1[j])
-max_v=max(pdf_values)
-pdf_norm=[x/max_v for x in pdf_values]
-plt.plot(X1[j][:-1] , pdf_norm,label='Distribution',color='green')
-plt.plot(X1[j], Y1, label='Tdigest', color='blue', linestyle='-')
-plt.plot(X2[j], Y2, label='CDF', color='red', linestyle='-')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.title('Сравнение распределения, Tdigest и CDF')
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.savefig(f'Graphic_{j}.png')
-plt.show()  
+    
+for j in range (0,33):
+    print (j)
+    data = read_floats_from_file("distributions/test_distribution_"+str(j)+".txt")  
+    cdf = CDF(data)
+    filename="sin_pow_2_5"
+    Y1, X1 = read_data('quantiles/td_sin_pow_2_5.txt')
+    Y2, X2 = read_data('quantiles/cdf_sin_pow_2_5.txt')
+    y_values = [cdf(x) for x in X1[j]]
+    # data_min = np.min(data)
+    # data_max = np.max(data)
+    # x_values = np.linspace(data_min, data_max, 1000000)
+    pdf_values = cdf_to_pdf(cdf, X1[j])
+    max_v=max(pdf_values)
+    pdf_norm=[x/max_v for x in pdf_values]
+    plt.plot(X1[j][:-1] , pdf_norm,label='Distribution',color='green')
+    plt.plot(X1[j], Y1, label='Tdigest', color='blue', linestyle='-')
+    plt.plot(X2[j], Y2, label='CDF', color='red', linestyle='-')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('Сравнение распределения, Tdigest и CDF')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(f'Graphic_{j}.png')
+    plt.show()  
