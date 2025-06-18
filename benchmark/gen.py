@@ -1,3 +1,4 @@
+import random
 import numpy as np
 
 
@@ -29,6 +30,7 @@ for i, param in enumerate(parameters_zipf, start=0):
     combined_data = np.concatenate((filtered_data, white_noise))
 
     sorted_data = np.sort(combined_data)
+    n_shufl = random.shuffle(sorted_data)
 
     with open(output_file, "w") as f:
         for value in sorted_data:
@@ -57,9 +59,11 @@ for i, param in enumerate(parameters_normal, start=0):
     n2=np.random.normal(n2_mean,n2_std,n2_num)
     n=np.concatenate((n1,n2))
     n_sorted=np.sort(n)
+    n_shufl = random.shuffle(n_sorted)
+
 
     with open(output_file, "w") as f:
-        for value in n_sorted:
+        for value in sorted_data:
             f.write(f"{value}\n")
 
 parameters_Pareto=[
@@ -76,9 +80,10 @@ for i, param in enumerate(parameters_Pareto, start=0):
     p_num=parameters_Pareto[i][1]
     n=np.random.pareto(p_shape,p_num)
     n_sorted=np.sort(n)
+    n_shufl = random.shuffle(n_sorted)
 
     with open(output_file, "w") as f:
-        for value in n_sorted:
+        for value in sorted_data:
             f.write(f"{value}\n")
 
 parameters_n_normal=[
@@ -106,8 +111,9 @@ for i, param in enumerate(parameters_n_normal, start=0):
         n.extend(normal_data)
 
     n_sorted=np.sort(n)
+    n_shufl = random.shuffle(n_sorted)
     with open(output_file, "w") as f:
-        for value in n_sorted:
+        for value in sorted_data:
             f.write(f"{value}\n")
 
 parameters_normal_tail=[
@@ -136,7 +142,8 @@ for i, param in enumerate(parameters_normal_tail, start=0):
     n3=np.random.normal(n3_mean,n3_std,n3_num)
     n=np.concatenate((n1,n2,n3))
     n_sorted=np.sort(n)
+    n_shufl = random.shuffle(n_sorted)
 
     with open(output_file, "w") as f:
-        for value in n_sorted:
+        for value in sorted_data:
             f.write(f"{value}\n")

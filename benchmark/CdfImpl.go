@@ -85,3 +85,14 @@ func GetQuantiles(td CDF, quantiles []float64) []float64 {
 	return results
 }
 
+func (cdf *CdfImpl) Merge(other *CdfImpl) {
+    cdf.data = append(cdf.data, other.data...)
+    sort.Float64s(cdf.data)
+}
+
+func (cdf *CdfImpl) MergeArray(others []*CdfImpl) {
+    for _, other := range others {
+        cdf.data = append(cdf.data, other.data...)
+    }
+    sort.Float64s(cdf.data)
+}

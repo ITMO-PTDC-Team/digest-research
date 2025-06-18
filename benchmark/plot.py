@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -19,7 +20,7 @@ def cdf_to_pdf(cdf, x_values):
     pdf_values = np.diff(cdf_values) / np.diff(x_values)
     return pdf_values
 
-def plot_cdf(cdf,x_values):
+def plot_cdf(cdf, x_values):
     y_values = [cdf(x) for x in x_values]
 
     plt.plot(x_values, y_values, label="CDF", color='red')
@@ -36,7 +37,8 @@ def plot_pdf(x_values, pdf_values):
     plt.grid(True)
     plt.legend()
     plt.show()
-def plot(cdf,x_values,pdf_values):
+
+def plot(cdf, x_values, pdf_values, save_name):
     y_values = [cdf(x) for x in x_values]
 
     plt.plot(x_values, y_values, label="CDF", color='red')
@@ -45,6 +47,7 @@ def plot(cdf,x_values,pdf_values):
     plt.ylabel('CDF(x)')
     plt.grid(True)
     plt.legend()
+    plt.savefig(save_name) 
     plt.show()
     
 def main():
@@ -56,15 +59,21 @@ def main():
     try:
         data = read_floats_from_file(filename)
     except FileNotFoundError:
+        print(f"Файл {filename} не найден.")
         return
+
     cdf = CDF(data)
 
     data_min = np.min(data)
     data_max = np.max(data)
-    x_values = np.linspace(data_min, data_max, 1000000)
+    x_values = np.linspace(data_min, data_max, 100)
 
     pdf_values = cdf_to_pdf(cdf, x_values)
-    plot(cdf,x_values,pdf_values)
+    max_v = max(pdf_values)
+    pdf_norm = [x/max_v for x in pdf_values]
+
+    output_filename = os.path.splitext(filename)[0] + '.png'
+    plot(cdf, x_values, pdf_norm, output_filename)
 
 if __name__ == "__main__":
     main()
